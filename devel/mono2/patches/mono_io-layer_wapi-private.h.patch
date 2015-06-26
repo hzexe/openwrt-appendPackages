@@ -1,0 +1,11 @@
+--- mono-2.0.1/mono/io-layer/wapi-private.h	2008-09-02 16:42:41.000000000 +0100
++++ mono-2.0.1/mono/io-layer/wapi-private.h.new	2008-11-01 01:08:41.000000000 +0000
+@@ -18,7 +18,7 @@
+ 
+ /* Catch this here rather than corrupt the shared data at runtime */
+ #if MONO_SIZEOF_SUNPATH==0
+-#error configure failed to discover size of unix socket path
++//#error configure failed to discover size of unix socket path
+ #endif
+ 
+ /* Increment this whenever an incompatible change is made to the

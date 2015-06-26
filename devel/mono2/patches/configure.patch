@@ -1,0 +1,498 @@
+--- mono-2.0.1/configure	2008-10-22 18:20:01.000000000 +0100
++++ mono-2.0.1/configure.new	2008-11-01 05:01:30.000000000 +0000
+@@ -5389,7 +5389,7 @@
+ CFLAGS_FOR_BUILD=$CFLAGS
+ BUILD_EXEEXT=
+ if test "x$cross_compiling" = "xyes"; then
+-	CC_FOR_BUILD=cc
++	CC_FOR_BUILD=cc
+ 	CFLAGS_FOR_BUILD=
+ 	BUILD_EXEEXT=""
+ fi
+@@ -25868,78 +25868,27 @@
+ #define HAVE_DL_LOADER 1
+ _ACEOF
+ 
+-				{ echo "$as_me:$LINENO: checking for preceeding underscore in symbols" >&5
+-echo $ECHO_N "checking for preceeding underscore in symbols... $ECHO_C" >&6; }
+-if test "${mono_cv_uscore+set}" = set; then
+-  echo $ECHO_N "(cached) $ECHO_C" >&6
+-else
+-
+-			if test "$cross_compiling" = yes; then
+-  { { echo "$as_me:$LINENO: error: cannot run test program while cross compiling
+-See \`config.log' for more details." >&5
+-echo "$as_me: error: cannot run test program while cross compiling
+-See \`config.log' for more details." >&2;}
+-   { (exit 1); exit 1; }; }
+-else
+-  cat >conftest.$ac_ext <<_ACEOF
+-/* confdefs.h.  */
+-_ACEOF
+-cat confdefs.h >>conftest.$ac_ext
+-cat >>conftest.$ac_ext <<_ACEOF
+-/* end confdefs.h.  */
+-#include <dlfcn.h>
+-			int mono_underscore_test (void) { return 42; }
+-			int main() {
+-			  void *f1 = (void*)0, *f2 = (void*)0, *handle;
+-			  handle = dlopen ((void*)0, 0);
+-			  if (handle) {
+-			    f1 = dlsym (handle, "mono_underscore_test");
+-			    f2 = dlsym (handle, "_mono_underscore_test");
+-			  } return (!f2 || f1);
+-			}
+-_ACEOF
+-rm -f conftest$ac_exeext
+-if { (ac_try="$ac_link"
+-case "(($ac_try" in
+-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+-  *) ac_try_echo=$ac_try;;
+-esac
+-eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+-  (eval "$ac_link") 2>&5
+-  ac_status=$?
+-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+-  (exit $ac_status); } && { ac_try='./conftest$ac_exeext'
+-  { (case "(($ac_try" in
+-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+-  *) ac_try_echo=$ac_try;;
+-esac
+-eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+-  (eval "$ac_try") 2>&5
+-  ac_status=$?
+-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+-  (exit $ac_status); }; }; then
+-  mono_cv_uscore=yes
+-else
+-  echo "$as_me: program exited with status $ac_status" >&5
+-echo "$as_me: failed program was:" >&5
+-sed 's/^/| /' conftest.$ac_ext >&5
+-
+-( exit $ac_status )
+-mono_cv_uscore=no
+-fi
+-rm -f core *.core core.conftest.* gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
+-fi
+-
+-
+-
+-fi
+-{ echo "$as_me:$LINENO: result: $mono_cv_uscore" >&5
+-echo "${ECHO_T}$mono_cv_uscore" >&6; }
+-		if test "x$mono_cv_uscore" = "xyes"; then
++		#		AC_CACHE_CHECK([for preceeding underscore in symbols],
++#			mono_cv_uscore,[
++#			AC_TRY_RUN([#include <dlfcn.h>
++#			int mono_underscore_test (void) { return 42; }
++#			int main() {
++#			  void *f1 = (void*)0, *f2 = (void*)0, *handle;
++#			  handle = dlopen ((void*)0, 0);
++#			  if (handle) {
++#			    f1 = dlsym (handle, "mono_underscore_test");
++#			    f2 = dlsym (handle, "_mono_underscore_test");
++#			  } return (!f2 || f1);
++#			}],
++#				[mono_cv_uscore=yes],
++#				[mono_cv_uscore=no],
++#			[])
++#		])
++#		if test "x$mono_cv_uscore" = "xyes"; then
+ 			MONO_DL_NEED_USCORE=1
+-		else
+-			MONO_DL_NEED_USCORE=0
+-		fi
++#		else
++#			MONO_DL_NEED_USCORE=0
++#		fi
+ 
+ 		{ echo "$as_me:$LINENO: checking for dlerror" >&5
+ echo $ECHO_N "checking for dlerror... $ECHO_C" >&6; }
+@@ -29805,250 +29754,145 @@
+ done
+ 
+ 
+-				{ echo "$as_me:$LINENO: checking for working __thread" >&5
+-echo $ECHO_N "checking for working __thread... $ECHO_C" >&6; }
+-	if test "x$with_tls" != "x__thread"; then
+-		{ echo "$as_me:$LINENO: result: disabled" >&5
+-echo "${ECHO_T}disabled" >&6; }
+-	else
+-		if test "$cross_compiling" = yes; then
+-  { { echo "$as_me:$LINENO: error: cannot run test program while cross compiling
+-See \`config.log' for more details." >&5
+-echo "$as_me: error: cannot run test program while cross compiling
+-See \`config.log' for more details." >&2;}
+-   { (exit 1); exit 1; }; }
+-else
+-  cat >conftest.$ac_ext <<_ACEOF
+-/* confdefs.h.  */
+-_ACEOF
+-cat confdefs.h >>conftest.$ac_ext
+-cat >>conftest.$ac_ext <<_ACEOF
+-/* end confdefs.h.  */
+-
+-			#include <pthread.h>
+-			__thread int i;
+-			static int res1, res2;
+-
+-			void thread_main (void *arg)
+-			{
+-				i = arg;
+-				sleep (1);
+-				if (arg == 1)
+-					res1 = (i == arg);
+-				else
+-					res2 = (i == arg);
+-			}
+-
+-			int main () {
+-				pthread_t t1, t2;
+-
+-				i = 5;
+-
+-				pthread_create (&t1, NULL, thread_main, 1);
+-				pthread_create (&t2, NULL, thread_main, 2);
+-
+-				pthread_join (t1, NULL);
+-				pthread_join (t2, NULL);
+-
+-				return !(res1 + res2 == 2);
+-			}
+-
+-_ACEOF
+-rm -f conftest$ac_exeext
+-if { (ac_try="$ac_link"
+-case "(($ac_try" in
+-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+-  *) ac_try_echo=$ac_try;;
+-esac
+-eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+-  (eval "$ac_link") 2>&5
+-  ac_status=$?
+-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+-  (exit $ac_status); } && { ac_try='./conftest$ac_exeext'
+-  { (case "(($ac_try" in
+-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+-  *) ac_try_echo=$ac_try;;
+-esac
+-eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+-  (eval "$ac_try") 2>&5
+-  ac_status=$?
+-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+-  (exit $ac_status); }; }; then
+-
+-				{ echo "$as_me:$LINENO: result: yes" >&5
+-echo "${ECHO_T}yes" >&6; }
+-
+-else
+-  echo "$as_me: program exited with status $ac_status" >&5
+-echo "$as_me: failed program was:" >&5
+-sed 's/^/| /' conftest.$ac_ext >&5
+-
+-( exit $ac_status )
+-
+-				{ echo "$as_me:$LINENO: result: no" >&5
+-echo "${ECHO_T}no" >&6; }
+-				with_tls=pthread
+-
+-fi
+-rm -f core *.core core.conftest.* gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
+-fi
+-
+-
+-	fi
+-
+-				{ echo "$as_me:$LINENO: checking for working sigaltstack" >&5
+-echo $ECHO_N "checking for working sigaltstack... $ECHO_C" >&6; }
+-	if test "x$with_sigaltstack" != "xyes"; then
++			#	AC_MSG_CHECKING(for working __thread)
++#	if test "x$with_tls" != "x__thread"; then
+ 		{ echo "$as_me:$LINENO: result: disabled" >&5
+ echo "${ECHO_T}disabled" >&6; }
+-	else
+-		if test "$cross_compiling" = yes; then
+-  { { echo "$as_me:$LINENO: error: cannot run test program while cross compiling
+-See \`config.log' for more details." >&5
+-echo "$as_me: error: cannot run test program while cross compiling
+-See \`config.log' for more details." >&2;}
+-   { (exit 1); exit 1; }; }
+-else
+-  cat >conftest.$ac_ext <<_ACEOF
+-/* confdefs.h.  */
+-_ACEOF
+-cat confdefs.h >>conftest.$ac_ext
+-cat >>conftest.$ac_ext <<_ACEOF
+-/* end confdefs.h.  */
+-
+-			#include <stdio.h>
+-			#include <stdlib.h>
+-			#include <unistd.h>
+-			#include <signal.h>
+-			#include <pthread.h>
+-			#include <sys/wait.h>
+-			#if defined(__FreeBSD__) || defined(__NetBSD__)
+-			#define SA_STACK SA_ONSTACK
+-			#endif
+-			static void
+-			sigsegv_signal_handler (int _dummy, siginfo_t *info, void *context)
+-			{
+-				exit (0);
+-			}
+-
+-			static void *
+-			loop (void *ignored)
+-			{
+-				char *ptr = NULL;
+-
+-				*ptr = 0;
+-				return NULL;
+-			}
+-
+-			static void
+-			child ()
+-			{
+-				struct sigaction sa;
+-				struct sigaltstack sas;
+-				pthread_t id;
+-				pthread_attr_t attr;
+-
+-				sa.sa_sigaction = sigsegv_signal_handler;
+-				sigemptyset (&sa.sa_mask);
+-				sa.sa_flags = SA_SIGINFO | SA_ONSTACK;
+-				if (sigaction (SIGSEGV, &sa, NULL) == -1) {
+-					perror ("sigaction");
+-					return;
+-				}
+-
+-				sas.ss_sp = malloc (SIGSTKSZ);
+-				sas.ss_size = SIGSTKSZ;
+-				sas.ss_flags = 0;
+-				if (sigaltstack (&sas, NULL) == -1) {
+-					perror ("sigaltstack");
+-					return;
+-				}
+-
+-				pthread_attr_init (&attr);
+-				if (pthread_create(&id, &attr, loop, &attr) != 0) {
+-					printf ("pthread_create\n");
+-					return;
+-				}
+-
+-				sleep (100);
+-			}
+-
+-			int
+-			main ()
+-			{
+-				pid_t son;
+-				int status;
+-				int i;
+-
+-				son = fork ();
+-				if (son == -1) {
+-					return 1;
+-				}
+-
+-				if (son == 0) {
+-					child ();
+-					return 0;
+-				}
+-
+-				for (i = 0; i < 3; ++i) {
+-					sleep (1);
+-					waitpid (son, &status, WNOHANG);
+-					if (WIFEXITED (status) && WEXITSTATUS (status) == 0)
+-						return 0;
+-				}
+-
+-				kill (son, SIGKILL);
+-				return 1;
+-			}
+-
+-
+-_ACEOF
+-rm -f conftest$ac_exeext
+-if { (ac_try="$ac_link"
+-case "(($ac_try" in
+-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+-  *) ac_try_echo=$ac_try;;
+-esac
+-eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+-  (eval "$ac_link") 2>&5
+-  ac_status=$?
+-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+-  (exit $ac_status); } && { ac_try='./conftest$ac_exeext'
+-  { (case "(($ac_try" in
+-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+-  *) ac_try_echo=$ac_try;;
+-esac
+-eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+-  (eval "$ac_try") 2>&5
+-  ac_status=$?
+-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+-  (exit $ac_status); }; }; then
+-
+-				{ echo "$as_me:$LINENO: result: yes" >&5
+-echo "${ECHO_T}yes" >&6; }
+-
+-cat >>confdefs.h <<\_ACEOF
+-#define HAVE_WORKING_SIGALTSTACK 1
+-_ACEOF
+-
+-
+-else
+-  echo "$as_me: program exited with status $ac_status" >&5
+-echo "$as_me: failed program was:" >&5
+-sed 's/^/| /' conftest.$ac_ext >&5
+-
+-( exit $ac_status )
+-
+-				with_sigaltstack=no
+-				{ echo "$as_me:$LINENO: result: no" >&5
+-echo "${ECHO_T}no" >&6; }
+-
+-fi
+-rm -f core *.core core.conftest.* gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
+-fi
+-
+-
+-	fi
++#	else
++#		AC_TRY_RUN([
++#			#include <pthread.h>
++#			__thread int i;
++#			static int res1, res2;
++#
++#			void thread_main (void *arg)
++#			{
++#				i = arg;
++#				sleep (1);
++#				if (arg == 1)
++#					res1 = (i == arg);
++#				else
++#					res2 = (i == arg);
++#			}
++#
++#			int main () {
++#				pthread_t t1, t2;
++#
++#				i = 5;
++#
++#				pthread_create (&t1, NULL, thread_main, 1);
++#				pthread_create (&t2, NULL, thread_main, 2);
++#
++#				pthread_join (t1, NULL);
++#				pthread_join (t2, NULL);
++#
++#				return !(res1 + res2 == 2);
++#			}
++#		], [
++#				AC_MSG_RESULT(yes)
++#		], [
++#				AC_MSG_RESULT(no)
++#				with_tls=pthread
++#		])
++#	fi
++
++			#	AC_MSG_CHECKING(for working sigaltstack)
++#	if test "x$with_sigaltstack" != "xyes"; then
++#		AC_MSG_RESULT(disabled)
++#	else
++#		AC_TRY_RUN([
++#			#include <stdio.h>
++#			#include <stdlib.h>
++#			#include <unistd.h>
++#			#include <signal.h>
++#			#include <pthread.h>
++#			#include <sys/wait.h>
++#			#if defined(__FreeBSD__) || defined(__NetBSD__)
++#			#define SA_STACK SA_ONSTACK
++#			#endif
++#			static void
++#			sigsegv_signal_handler (int _dummy, siginfo_t *info, void *context)
++#			{
++#				exit (0);
++#			}
++#
++#			static void *
++#			loop (void *ignored)
++#			{
++#				char *ptr = NULL;
++#
++#				*ptr = 0;
++#				return NULL;
++#			}
++#
++#			static void
++#			child ()
++#			{
++#				struct sigaction sa;
++#				struct sigaltstack sas;
++#				pthread_t id;
++#				pthread_attr_t attr;
++#
++#				sa.sa_sigaction = sigsegv_signal_handler;
++#				sigemptyset (&sa.sa_mask);
++#				sa.sa_flags = SA_SIGINFO | SA_ONSTACK;
++#				if (sigaction (SIGSEGV, &sa, NULL) == -1) {
++#					perror ("sigaction");
++#					return;
++#				}
++#
++#				sas.ss_sp = malloc (SIGSTKSZ);
++#				sas.ss_size = SIGSTKSZ;
++#				sas.ss_flags = 0;
++#				if (sigaltstack (&sas, NULL) == -1) {
++#					perror ("sigaltstack");
++#					return;
++#				}
++#
++#				pthread_attr_init (&attr);
++#				if (pthread_create(&id, &attr, loop, &attr) != 0) {
++#					printf ("pthread_create\n");
++#					return;
++#				}
++#
++#				sleep (100);
++#			}
++#
++#			int
++#			main ()
++#			{
++#				pid_t son;
++#				int status;
++#				int i;
++#
++#				son = fork ();
++#				if (son == -1) {
++#					return 1;
++#				}
++#
++#				if (son == 0) {
++#					child ();
++#					return 0;
++#				}
++#
++#				for (i = 0; i < 3; ++i) {
++#					sleep (1);
++#					waitpid (son, &status, WNOHANG);
++#					if (WIFEXITED (status) && WEXITSTATUS (status) == 0)
++#						return 0;
++#				}
++#
++#				kill (son, SIGKILL);
++#				return 1;
++#			}
++#
++#		], [
++#				AC_MSG_RESULT(yes)
++#				AC_DEFINE(HAVE_WORKING_SIGALTSTACK, 1, [Have a working sigaltstack])
++#		], [
++#				with_sigaltstack=no
++#				AC_MSG_RESULT(no)
++#		])
++#	fi
+ 
+ 				# 'Real Time' functions on Solaris
+ 	# posix4 on Solaris 2.6

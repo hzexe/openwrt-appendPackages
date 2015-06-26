@@ -1,0 +1,11 @@
+--- mono-2.0.1/configure.in	2008-10-20 18:29:46.000000000 +0100
++++ mono-2.0.1/configure.in.new	2008-11-01 04:29:57.000000000 +0000
+@@ -283,7 +283,7 @@
+ CFLAGS_FOR_BUILD=$CFLAGS
+ BUILD_EXEEXT=
+ if test "x$cross_compiling" = "xyes"; then
+-	CC_FOR_BUILD=cc
++	CC_FOR_BUILD=$CC
+ 	CFLAGS_FOR_BUILD=
+ 	BUILD_EXEEXT=""
+ fi

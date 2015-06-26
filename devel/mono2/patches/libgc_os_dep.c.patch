@@ -1,0 +1,20 @@
+--- mono-2.0.1/libgc/os_dep.c	2008-07-01 18:50:03.000000000 +0100
++++ mono-2.0.1/libgc/os_dep.c.new	2008-10-31 23:50:29.000000000 +0000
+@@ -1,3 +1,4 @@
++
+ /*
+  * Copyright 1988, 1989 Hans-J. Boehm, Alan J. Demers
+  * Copyright (c) 1991-1995 by Xerox Corporation.  All rights reserved.
+@@ -4020,9 +4021,9 @@
+ 
+ #endif /* NEED_CALLINFO */
+ 
+-#if defined(GC_HAVE_BUILTIN_BACKTRACE)
+-# include <execinfo.h>
+-#endif
++//#if defined(GC_HAVE_BUILTIN_BACKTRACE)
++//# include <execinfo.h>
++//#endif
+ 
+ #ifdef SAVE_CALL_CHAIN
+ 

@@ -1,0 +1,15 @@
+--- mono-2.0.1/mono/profiler/mono-profiler-logging.c	2008-09-02 16:42:42.000000000 +0100
++++ mono-2.0.1/mono/profiler/mono-profiler-logging.c.new	2008-11-03 01:16:35.000000000 +0000
+@@ -4026,7 +4026,11 @@
+ 		return;
+ 	if (stat_buf.st_size > HEAP_SHOT_COMMAND_FILE_MAX_LENGTH)
+ 		return;
+-	if ((stat_buf.st_mtim.tv_sec * 1000000) < profiler->heap_shot_command_file_access_time)
++	// AJL ?
++	if ((stat_buf.st_mtime
++
++
++ * 1000000) < profiler->heap_shot_command_file_access_time)
+ 		return;
+ 	
+ 	fd = open (profiler->heap_shot_command_file_name, O_RDONLY);

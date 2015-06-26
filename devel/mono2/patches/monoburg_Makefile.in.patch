@@ -1,0 +1,55 @@
+--- mono-2.0.1/mono/monoburg/Makefile.in	2008-10-22 18:19:58.000000000 +0100
++++ mono-2.0.1/mono/monoburg/Makefile.in.new	2008-11-03 00:06:57.000000000 +0000
+@@ -59,22 +59,22 @@
+ AUTOHEADER = @AUTOHEADER@
+ AUTOMAKE = @AUTOMAKE@
+ AWK = @AWK@
+-BASE_DEPENDENCIES_CFLAGS = @BASE_DEPENDENCIES_CFLAGS@
+-BASE_DEPENDENCIES_LIBS = @BASE_DEPENDENCIES_LIBS@
++BASE_DEPENDENCIES_CFLAGS = -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include
++BASE_DEPENDENCIES_LIBS = -lglib-2.0
+ BISON = @BISON@
+ BUILD_EXEEXT = @BUILD_EXEEXT@
+-BUILD_GLIB_CFLAGS = @BUILD_GLIB_CFLAGS@
+-BUILD_GLIB_LIBS = @BUILD_GLIB_LIBS@
++BUILD_GLIB_CFLAGS = -pthread -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include
++BUILD_GLIB_LIBS = -pthread -lgthread-2.0 -lglib-2.0	
+ CC = $(CC_FOR_BUILD)
+ CCAS = @CCAS@
+ CCASDEPMODE = @CCASDEPMODE@
+ CCASFLAGS = @CCASFLAGS@
+ CCDEPMODE = @CCDEPMODE@
+ CC_FOR_BUILD = @CC_FOR_BUILD@
+-CFLAGS = @CFLAGS@
++CFLAGS = -Os -pipe -mips32 -mtune-mips32 -funit-at-a-time -fhonour-copts -fno-strict-aliasing -Wdeclaration-after-statement -g -Wall -Wunused -Wmissing-prototypes -Wmissing-declarations -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -Wpointer-arith -Wno-cast-qual -Wcast-align -Wwrite-strings
+ CFLAGS_FOR_BUILD = @CFLAGS_FOR_BUILD@
+ CPP = @CPP@
+-CPPFLAGS = @CPPFLAGS@
++CPPFLAGS = -I/usr/include -I/include -DGC_LINUX_THREADS -D_GNU_SOURCE -D_REENTRANT -DUSE_MMAP -DUSE_MUNMAP -DUSE_COMPILER_TLS -DNO_UNALIGNED_ACCESS
+ CXX = @CXX@
+ CXXCPP = @CXXCPP@
+ CXXDEPMODE = @CXXDEPMODE@
+@@ -96,10 +96,10 @@
+ EXEEXT = @EXEEXT@
+ F77 = @F77@
+ FFLAGS = @FFLAGS@
+-GLIB_CFLAGS = @GLIB_CFLAGS@
+-GLIB_LIBS = @GLIB_LIBS@
+-GMODULE_CFLAGS = @GMODULE_CFLAGS@
+-GMODULE_LIBS = @GMODULE_LIBS@
++GLIB_CFLAGS = -pthread -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include
++GLIB_LIBS = -pthread -lgthread-2.0 -lglib-2.0
++GMODULE_CFLAGS = -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include
++GMODULE_LIBS = -Wl,--export-dynamic -L/usr/lib -lgmodule-2.0 -lglib-2.0
+ GREP = @GREP@
+ HAVE_BOEHM_GC = @HAVE_BOEHM_GC@
+ HOST_CC = @HOST_CC@
+@@ -109,7 +109,7 @@
+ INSTALL_SCRIPT = @INSTALL_SCRIPT@
+ INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
+ INTL = @INTL@
+-LDFLAGS = @LDFLAGS@
++LDFLAGS = -Wl,-rpath-link=/usr/lib
+ LIBC = @LIBC@
+ LIBGC_CFLAGS = @LIBGC_CFLAGS@
+ LIBGC_LIBS = @LIBGC_LIBS@
