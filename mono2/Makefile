@@ -8,7 +8,7 @@
 
 include $(TOPDIR)/rules.mk
 
-PKG_NAME:=mono_V2
+PKG_NAME:=mono
 PKG_VERSION:=2.0.1
 PKG_RELEASE:=1
 
